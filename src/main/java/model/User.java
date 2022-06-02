@@ -1,5 +1,6 @@
 package model;
 
+import com.google.common.base.Strings;
 import util.HttpRequestUtils;
 
 import java.util.Map;
@@ -49,4 +50,12 @@ public class User {
     public String toString() {
         return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
     }
+
+    public boolean isEmpty() {
+        return Strings.isNullOrEmpty(this.userId)
+                && Strings.isNullOrEmpty(this.password)
+                && Strings.isNullOrEmpty(this.name)
+                && Strings.isNullOrEmpty(this.email);
+    }
+
 }
