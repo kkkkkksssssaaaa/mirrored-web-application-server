@@ -48,7 +48,7 @@ public class RequestHandler extends Thread {
             while (StringUtils.isPresent(line = reader.readLine())) {
                 if (ResourceValidator.isRequestPatternMatched(line)) {
                     body = ResourceUtils.staticResourceBytes(line);
-                    user = createUser(line);
+                    user = User.fromQueryParam(ResourceUtils.queryParams(line));
                 }
 
                 System.out.println(line);
@@ -61,18 +61,6 @@ public class RequestHandler extends Thread {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-    }
-
-    private User createUser(String line) {
-        Map<String, String> queryParam =
-                HttpRequestUtils.parseQueryString(
-                        ResourceValidator.queryString(line));
-
-        return new User(
-                queryParam.get("userId"),
-                queryParam.get("password"),
-                queryParam.get("name"),
-                queryParam.get("email"));
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {

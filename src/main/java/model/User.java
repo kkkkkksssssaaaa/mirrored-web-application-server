@@ -1,10 +1,20 @@
 package model;
 
+import java.util.Map;
+
 public class User {
     private String userId;
     private String password;
     private String name;
     private String email;
+
+    public static User fromQueryParam(Map<String, String> queryParam) {
+        return new User(
+                queryParam.get("userId"),
+                queryParam.get("password"),
+                queryParam.get("name"),
+                queryParam.get("email"));
+    }
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;

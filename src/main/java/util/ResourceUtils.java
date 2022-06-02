@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Map;
 
 public class ResourceUtils {
 
@@ -31,6 +32,11 @@ public class ResourceUtils {
 
             return new byte[0];
         }
+    }
+
+    public static Map<String, String> queryParams(String line) {
+        return HttpRequestUtils.parseQueryString(
+                ResourceValidator.queryString(line));
     }
 
     private static File resource(String path) {
