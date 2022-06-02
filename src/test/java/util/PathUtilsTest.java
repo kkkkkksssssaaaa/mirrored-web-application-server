@@ -12,16 +12,26 @@ public class PathUtilsTest {
 
     @Test
     public void 요청_문자열_정규식_검사() {
+        assertTrue(PathUtils.isRequestPatternMatched(MockRequest.requestedStrWithQueryString()));
         assertTrue(PathUtils.isRequestPatternMatched(MockRequest.requestedStr()));
     }
 
     @Test
     public void 요청_문자열에서_queryString을_추출할_수_있다() {
-        String queryString = PathUtils.queryString(MockRequest.requestedStr());
+        String queryString = PathUtils.queryString(MockRequest.requestedStrWithQueryString());
 
         assertEquals(
                 queryString,
                 "userId=haesam&password=password1!&name=왕해삼&email=kkkkkksssssaaaa.dev@gmail.com");
+    }
+
+    @Test
+    public void 요청_문자열에서_resource를_추출할_수_있다() {
+        String queryString = PathUtils.resourcePath(MockRequest.requestedStr());
+
+        assertEquals(
+                queryString,
+                "/index.html");
     }
 
 }

@@ -10,7 +10,7 @@ public class MockRequest {
     private static final String name = "왕해삼";
     private static final String email = "kkkkkksssssaaaa.dev@gmail.com";
 
-    private static final String requestedStr =
+    private static final String requestedStrWithQueryString =
             String.format(
                     "GET " +
                             "/user/create?" +
@@ -21,8 +21,12 @@ public class MockRequest {
                             "HTTP/1.1",
                     userId, password, name, email);
 
+    public static String requestedStrWithQueryString() {
+        return requestedStrWithQueryString;
+    }
+
     public static String requestedStr() {
-        return requestedStr;
+        return "GET /index.html HTTP/1.1";
     }
 
 }
