@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 public class ResourceUtils {
 
@@ -19,14 +20,14 @@ public class ResourceUtils {
             return new byte[0];
         }
 
-        if (!isPresent(ResourceValidator.resourcePath(line))) {
+        if (!isPresent(staticResource(line))) {
             return new byte[0];
         }
 
         try {
             return Files
                     .readAllBytes(resource(
-                            ResourceValidator.resourcePath(line)).toPath());
+                            staticResource(line)).toPath());
         } catch (IOException e) {
             log.error("{} is invalid resource.", line);
 
@@ -36,7 +37,7 @@ public class ResourceUtils {
 
     public static Map<String, String> queryParams(String line) {
         return HttpRequestUtils.parseQueryString(
-                ResourceValidator.queryString(line));
+                queryString(line));
     }
 
     private static File resource(String path) {
@@ -47,4 +48,23 @@ public class ResourceUtils {
         return new File(DEFAULT_PATH + path).exists();
     }
 
+    public static String staticResource(String requestedStr) {
+        Matcher m = ResourceValidator.matcher(requestedStr);
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(2);
+    }
+
+    public static String queryString(String requestedStr) {
+        Matcher m = ResourceValidator.matcher(requestedStr);
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(3).replace("?", "");
+    }
 }

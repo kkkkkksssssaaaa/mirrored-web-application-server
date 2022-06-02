@@ -22,24 +22,8 @@ public class ResourceValidator {
         return REQUEST_PATTERN.matcher(requestedStr).find();
     }
 
-    public static String resourcePath(String requestedStr) {
-        Matcher m = REQUEST_PATTERN.matcher(requestedStr);
-
-        if (!m.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        return m.group(2);
-    }
-
-    public static String queryString(String requestedStr) {
-        Matcher m = REQUEST_PATTERN.matcher(requestedStr);
-
-        if (!m.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        return m.group(3).replace("?", "");
+    public static Matcher matcher(String requestedStr) {
+        return REQUEST_PATTERN.matcher(requestedStr);
     }
 
 }
