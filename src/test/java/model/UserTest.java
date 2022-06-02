@@ -3,7 +3,7 @@ package model;
 import mock.MockRequest;
 import org.junit.Test;
 import util.HttpRequestUtils;
-import util.PathUtils;
+import util.ResourceValidator;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class UserTest {
     public void queryParam으로부터_User인스턴스를_만들_수_있다() {
         Map<String, String> queryParam =
                 HttpRequestUtils.parseQueryString(
-                        PathUtils.queryString(MockRequest.requestedStrWithQueryString()));
+                        ResourceValidator.queryString(MockRequest.requestedStrWithQueryString()));
 
         User user = new User(
                 queryParam.get("userId"),

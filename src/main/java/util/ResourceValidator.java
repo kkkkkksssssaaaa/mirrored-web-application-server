@@ -3,7 +3,7 @@ package util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PathUtils {
+public class ResourceValidator {
 
     private static final Pattern REQUEST_PATTERN =
             Pattern.compile("(GET|POST|PUT|DELETE)\\s+([^?\\s]+)((?:[?&][^&\\s]+)*)\\s+(HTTP/.*)");

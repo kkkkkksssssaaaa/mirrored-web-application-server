@@ -8,17 +8,17 @@ import static org.junit.Assert.*;
 /**
  * @see MockRequest
  * */
-public class PathUtilsTest {
+public class ResourceValidatorTest {
 
     @Test
     public void 요청_문자열_정규식_검사() {
-        assertTrue(PathUtils.isRequestPatternMatched(MockRequest.requestedStrWithQueryString()));
-        assertTrue(PathUtils.isRequestPatternMatched(MockRequest.requestedStr()));
+        assertTrue(ResourceValidator.isRequestPatternMatched(MockRequest.requestedStrWithQueryString()));
+        assertTrue(ResourceValidator.isRequestPatternMatched(MockRequest.requestedStr()));
     }
 
     @Test
     public void 요청_문자열에서_queryString을_추출할_수_있다() {
-        String queryString = PathUtils.queryString(MockRequest.requestedStrWithQueryString());
+        String queryString = ResourceValidator.queryString(MockRequest.requestedStrWithQueryString());
 
         assertEquals(
                 queryString,
@@ -27,7 +27,7 @@ public class PathUtilsTest {
 
     @Test
     public void 요청_문자열에서_resource를_추출할_수_있다() {
-        String queryString = PathUtils.resourcePath(MockRequest.requestedStr());
+        String queryString = ResourceValidator.resourcePath(MockRequest.requestedStr());
 
         assertEquals(
                 queryString,
@@ -36,8 +36,8 @@ public class PathUtilsTest {
 
     @Test
     public void 요청_문자열에서_queryParam이_존재하는지_구분할_수_있다() {
-        assertTrue(PathUtils.isContainQueryParameter(MockRequest.requestedStrWithQueryString()));
-        assertFalse(PathUtils.isContainQueryParameter(MockRequest.requestedStr()));
+        assertTrue(ResourceValidator.isContainQueryParameter(MockRequest.requestedStrWithQueryString()));
+        assertFalse(ResourceValidator.isContainQueryParameter(MockRequest.requestedStr()));
     }
 
 }
