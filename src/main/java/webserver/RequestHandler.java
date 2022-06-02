@@ -2,10 +2,8 @@ package webserver;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
+import model.Request;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +21,6 @@ import util.StringUtils;
  * */
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
-    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private Socket connection;
 
@@ -38,30 +35,23 @@ public class RequestHandler extends Thread {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             DataOutputStream dos = new DataOutputStream(out);
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(in, DEFAULT_CHARSET));
-
-            String line = null;
             byte[] body = null;
             User user = null;
 
-            while (StringUtils.isPresent(line = reader.readLine())) {
-                if (ResourceValidator.isRequestPatternMatched(line)) {
-                    body = ResourceUtils.staticResourceBytes(line);
-                    user = User.fromQueryParam(ResourceUtils.queryParams(line));
-                }
+            Request req = Request.fromInputStream(in);
 
-                System.out.println(line);
+            if (ResourceValidator.isRequestPatternMatched(req.resource())) {
+                body = ResourceUtils.staticResourceBytes(req.resource());
+                user = User.fromQueryString(HttpRequestUtils.parseQueryString(req.resource()));
             }
 
             response200Header(dos, body.length);
             responseBody(dos, body);
-
-            System.out.println("\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
+
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
@@ -82,4 +72,5 @@ public class RequestHandler extends Thread {
             log.error(e.getMessage());
         }
     }
+
 }
