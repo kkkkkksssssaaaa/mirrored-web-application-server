@@ -5,10 +5,13 @@ import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Map;
 
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
+import util.ResourceUtils;
 import util.ResourceValidator;
 import util.StringUtils;
 
@@ -22,7 +25,6 @@ import util.StringUtils;
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private static final String DEFAULT_RESOURCE_PATH = "./webapp";
 
     private Socket connection;
 
@@ -43,10 +45,15 @@ public class RequestHandler extends Thread {
 
             String line = null;
             byte[] body = null;
+            User user = null;
 
             while (StringUtils.isPresent(line = reader.readLine())) {
-                if (PathUtils.isRequestPatternMatched(line)) {
-                    body = readFile(PathUtils.resourcePath(line));
+                if (ResourceValidator.isRequestPatternMatched(line)) {
+                    if (!ResourceValidator.isContainQueryParameter(line)) {
+                        body = ResourceUtils.resourceBytes(ResourceValidator.resourcePath(line));
+                    }
+
+                    user = createUser(line);
                 }
 
                 System.out.println(line);
@@ -59,6 +66,18 @@ public class RequestHandler extends Thread {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private User createUser(String line) {
+        Map<String, String> queryParam =
+                HttpRequestUtils.parseQueryString(
+                        ResourceValidator.queryString(line));
+
+        return new User(
+                queryParam.get("userId"),
+                queryParam.get("password"),
+                queryParam.get("name"),
+                queryParam.get("email"));
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
@@ -78,17 +97,6 @@ public class RequestHandler extends Thread {
             dos.flush();
         } catch (IOException e) {
             log.error(e.getMessage());
-        }
-    }
-
-    private byte[] readFile(String url) throws IOException {
-        try {
-            return Files.readAllBytes(
-                    new File(DEFAULT_RESOURCE_PATH + url).toPath());
-        } catch (IOException e) {
-            log.error("{} is invalid resource.", url);
-
-            throw e;
         }
     }
 }
