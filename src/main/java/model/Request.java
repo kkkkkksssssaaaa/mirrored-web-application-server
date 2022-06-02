@@ -2,6 +2,7 @@ package model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.IOUtils;
 import util.StringUtils;
 import webserver.RequestHandler;
 
@@ -21,7 +22,7 @@ public class Request {
     private final List<String> lines = new ArrayList<>();
 
     private Request(InputStream in) {
-        fillLines(in);
+        readStream(in);
     }
 
     public static Request fromInputStream(InputStream in) {
@@ -32,7 +33,16 @@ public class Request {
         return this.lines.get(0);
     }
 
-    private void fillLines(InputStream in) {
+    public int contentLength() {
+        return lines.stream()
+                .filter(x -> x.contains("Content-Length"))
+                .findFirst()
+                .map(x -> x.replace("Content-Length: ", ""))
+                .map(Integer::parseInt)
+                .orElseGet(() -> 0);
+    }
+
+    private void readStream(InputStream in) {
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(in, DEFAULT_CHARSET));
