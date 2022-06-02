@@ -53,6 +53,8 @@ public class RequestHandler extends Thread {
 
             response200Header(dos, body.length);
             responseBody(dos, body);
+
+            System.out.println("\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
