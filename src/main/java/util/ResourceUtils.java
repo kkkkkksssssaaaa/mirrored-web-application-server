@@ -50,6 +50,10 @@ public class ResourceUtils {
         return m.group(2);
     }
 
+    public static byte[] mainResource() {
+        return bytes(ResourceValidator.MAIN);
+    }
+
     private static byte[] bytes(String path) {
         try {
             File staticResource = staticResource(

@@ -12,6 +12,7 @@ public class ResourceValidator {
     public static final Pattern REQUEST_PATTERN =
             Pattern.compile("(GET|POST|PUT|DELETE)\\s+([^?\\s]+)((?:[?&][^&\\s]+)*)\\s+(HTTP/.*)");
     public static final String DEFAULT_PATH = "./webapp";
+    public static final String MAIN = "/index.html";
     private static final List<String> STATIC_RESOURCES =
             Arrays.asList(
                     "/index.html",
