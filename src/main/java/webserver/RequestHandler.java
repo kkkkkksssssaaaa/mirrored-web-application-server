@@ -30,7 +30,7 @@ public class RequestHandler extends Thread {
     }
 
     public void run() {
-        log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
+        log.debug("\nNew Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
@@ -45,7 +45,7 @@ public class RequestHandler extends Thread {
 
             while (StringUtils.isPresent(line = reader.readLine())) {
                 if (PathUtils.isRequestPatternMatched(line)) {
-                    body = readFile(PathUtils.getRequestedResourcePath(line));
+                    body = readFile(PathUtils.resourcePath(line));
                 }
 
                 System.out.println(line);

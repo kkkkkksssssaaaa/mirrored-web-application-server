@@ -12,7 +12,7 @@ public class PathUtils {
         return REQUEST_PATTERN.matcher(requestedStr).find();
     }
 
-    public static String getRequestedResourcePath(String requestedStr) {
+    public static String resourcePath(String requestedStr) {
         Matcher m = REQUEST_PATTERN.matcher(requestedStr);
 
         if (!m.find()) {
