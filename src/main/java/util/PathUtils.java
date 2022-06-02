@@ -22,4 +22,14 @@ public class PathUtils {
         return m.group(2);
     }
 
+    public static String queryString(String requestedStr) {
+        Matcher m = REQUEST_PATTERN.matcher(requestedStr);
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(3).replace("?", "");
+    }
+
 }
