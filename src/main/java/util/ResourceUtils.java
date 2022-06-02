@@ -12,7 +12,6 @@ import java.util.regex.Matcher;
 public class ResourceUtils {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceUtils.class);
-    private static final String DEFAULT_PATH = "./webapp";
 
     public static byte[] staticResourceBytes(String line) {
         if (ResourceValidator.isContainQueryParameter(line)) {
@@ -20,7 +19,7 @@ public class ResourceUtils {
             return new byte[0];
         }
 
-        if (!isPresent(staticResource(line))) {
+        if (!ResourceValidator.isPresent(staticResource(line))) {
             return new byte[0];
         }
 
@@ -41,11 +40,7 @@ public class ResourceUtils {
     }
 
     private static File resource(String path) {
-        return new File(DEFAULT_PATH + path);
-    }
-
-    private static boolean isPresent(String path) {
-        return new File(DEFAULT_PATH + path).exists();
+        return new File(ResourceValidator.DEFAULT_PATH + path);
     }
 
     public static String staticResource(String requestedStr) {
