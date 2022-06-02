@@ -34,4 +34,10 @@ public class PathUtilsTest {
                 "/index.html");
     }
 
+    @Test
+    public void 요청_문자열에서_queryParam이_존재하는지_구분할_수_있다() {
+        assertTrue(PathUtils.isContainQueryParameter(MockRequest.requestedStrWithQueryString()));
+        assertFalse(PathUtils.isContainQueryParameter(MockRequest.requestedStr()));
+    }
+
 }
