@@ -7,10 +7,7 @@ import model.Request;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.HttpRequestUtils;
-import util.ResourceUtils;
-import util.ResourceValidator;
-import util.StringUtils;
+import util.*;
 
 /**
  * 2. WebServer 가 클라이언트의 요청을 받으면 새로운 스레드를 실행
@@ -42,7 +39,7 @@ public class RequestHandler extends Thread {
 
             if (ResourceValidator.isRequestPatternMatched(req.resource())) {
                 body = ResourceUtils.staticResourceBytes(req.resource());
-                user = User.fromQueryString(HttpRequestUtils.parseQueryString(req.resource()));
+                user = User.fromQueryString(req.postBody());
             }
 
             response200Header(dos, body.length);
