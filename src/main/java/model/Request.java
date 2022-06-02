@@ -20,6 +20,7 @@ public class Request {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final List<String> lines = new ArrayList<>();
+    private String postBody;
 
     private Request(InputStream in) {
         readStream(in);
@@ -31,6 +32,10 @@ public class Request {
 
     public String resource() {
         return this.lines.get(0);
+    }
+
+    public String postBody() {
+        return this.postBody;
     }
 
     public int contentLength() {
@@ -55,6 +60,8 @@ public class Request {
                 this.lines.add(line);
                 System.out.println(line);
             }
+
+            postBody = IOUtils.readData(reader, contentLength());
 
             System.out.println("\n=======================================");
         } catch (IOException e) {
