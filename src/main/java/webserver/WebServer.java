@@ -6,6 +6,16 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 1. 웹 서버를 시작하고 클라이언트의 요청을 받기 위해 대기
+ * 요청이 있을 경우 해당 요청을 RequestHandler 클래스에 위임
+ *
+ * 클라이언트의 요청을 받기 위해 서버 소켓을 생성함
+ *
+ * RequestHandler 인스턴스를 생성하여 해당 요청을 처리하기 위한 스레드를 실행하는 클래스임
+ *
+ * @see RequestHandler
+ * */
 public class WebServer {
     private static final Logger log = LoggerFactory.getLogger(WebServer.class);
     private static final int DEFAULT_PORT = 8080;
