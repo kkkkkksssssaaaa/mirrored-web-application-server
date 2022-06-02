@@ -27,7 +27,7 @@ public class ResourceValidatorTest {
 
     @Test
     public void 요청_문자열에서_resource를_추출할_수_있다() {
-        String queryString = ResourceUtils.staticResource(MockRequest.requestedStr());
+        String queryString = ResourceUtils.staticResourcePath(MockRequest.requestedStr());
 
         assertEquals(
                 queryString,
