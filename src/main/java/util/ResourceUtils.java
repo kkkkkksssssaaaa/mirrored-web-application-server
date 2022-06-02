@@ -12,17 +12,24 @@ public class ResourceUtils {
     private static final Logger log = LoggerFactory.getLogger(ResourceUtils.class);
     private static final String DEFAULT_PATH = "./webapp";
 
-    public static byte[] resourceBytes(String path) {
-        if (!isPresent(path)) {
-            return null;
+    public static byte[] staticResourceBytes(String line) {
+        if (ResourceValidator.isContainQueryParameter(line)) {
+            // TODO 정적 리소스(.html) 유지하여 응답해야함
+            return new byte[0];
+        }
+
+        if (!isPresent(ResourceValidator.resourcePath(line))) {
+            return new byte[0];
         }
 
         try {
-            return Files.readAllBytes(resource(path).toPath());
+            return Files
+                    .readAllBytes(resource(
+                            ResourceValidator.resourcePath(line)).toPath());
         } catch (IOException e) {
-            log.error("{} is invalid resource.", path);
+            log.error("{} is invalid resource.", line);
 
-            throw new RuntimeException();
+            return new byte[0];
         }
     }
 

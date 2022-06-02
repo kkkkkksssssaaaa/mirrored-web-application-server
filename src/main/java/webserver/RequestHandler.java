@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Map;
 
 import model.User;
@@ -37,7 +36,6 @@ public class RequestHandler extends Thread {
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
             DataOutputStream dos = new DataOutputStream(out);
 
             BufferedReader reader = new BufferedReader(
@@ -49,10 +47,7 @@ public class RequestHandler extends Thread {
 
             while (StringUtils.isPresent(line = reader.readLine())) {
                 if (ResourceValidator.isRequestPatternMatched(line)) {
-                    if (!ResourceValidator.isContainQueryParameter(line)) {
-                        body = ResourceUtils.resourceBytes(ResourceValidator.resourcePath(line));
-                    }
-
+                    body = ResourceUtils.staticResourceBytes(line);
                     user = createUser(line);
                 }
 
