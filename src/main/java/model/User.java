@@ -1,5 +1,7 @@
 package model;
 
+import util.HttpRequestUtils;
+
 import java.util.Map;
 
 public class User {
@@ -14,6 +16,10 @@ public class User {
                 queryParam.get("password"),
                 queryParam.get("name"),
                 queryParam.get("email"));
+    }
+
+    public static User fromQueryString(String queryString) {
+        return fromQueryParam(HttpRequestUtils.parseQueryString(queryString));
     }
 
     public User(String userId, String password, String name, String email) {
