@@ -14,10 +14,6 @@ public class ResourceUtils {
     private static final Logger log = LoggerFactory.getLogger(ResourceUtils.class);
     public static final String DEFAULT_PATH = "./webapp";
 
-    public static byte[] staticResourceBytes(String line) {
-        return bytes(staticResourcePath(line));
-    }
-
     private static File staticResource(String path) {
         return new File(DEFAULT_PATH + path);
     }
