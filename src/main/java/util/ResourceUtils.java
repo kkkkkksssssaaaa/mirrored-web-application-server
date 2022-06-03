@@ -32,7 +32,7 @@ public class ResourceUtils {
         return m.group(2);
     }
 
-    public static byte[] resource(String router) {
+    public static byte[] getBytes(String router) {
         return bytes(router);
     }
 

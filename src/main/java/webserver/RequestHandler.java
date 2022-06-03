@@ -48,12 +48,12 @@ public class RequestHandler extends Thread {
             }
 
             if (null == user || user.isEmpty()) {
-                body = ResourceUtils.staticResourceBytes(req.resource());
+                body = ResourceUtils.getBytes(req.resource());
 
                 Response.create(200, body, out).flush();
             } else {
                 DataBase.addUser(user);
-                body = ResourceUtils.resource(Router.MAIN);
+                body = ResourceUtils.getBytes(Router.MAIN);
 
                 Response.create(302, body, out)
                         .flush(Router.MAIN);

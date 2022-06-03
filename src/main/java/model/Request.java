@@ -58,7 +58,7 @@ public class Request {
     }
 
     public String resource() {
-        return this.lines.get(0);
+        return this.resource;
     }
 
     public String postBody() {
