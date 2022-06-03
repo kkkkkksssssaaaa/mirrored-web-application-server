@@ -2,10 +2,7 @@ package model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.IOUtils;
-import util.RequestUtil;
-import util.ResourceUtils;
-import util.StringUtils;
+import util.*;
 import webserver.RequestHandler;
 
 import java.io.BufferedReader;
@@ -26,6 +23,7 @@ public class Request {
     private final List<String> lines = new ArrayList<>();
     private final String method;
     private final Map<String, String> queryParam = new HashMap<>();
+    private final Map<String, String> cookies = new HashMap<>();
     private final String resource;
     private final String body;
 
@@ -45,6 +43,7 @@ public class Request {
 
             method = RequestUtil.findMethod(this.lines.get(0));
             queryParam.putAll(RequestUtil.queryParamFromRequestedString(this.lines.get(0)));
+            cookies.putAll(HttpRequestUtils.parseCookies(findCookieInLines()));
             resource = ResourceUtils.staticResourcePath(this.lines.get(0));
             body = IOUtils.readData(reader, contentLength());
 
@@ -72,6 +71,10 @@ public class Request {
         return this.body;
     }
 
+    public Map<String, String> cookies() {
+        return this.cookies;
+    }
+
     public int contentLength() {
         return lines.stream()
                 .filter(x -> x.contains("Content-Length"))
@@ -79,6 +82,14 @@ public class Request {
                 .map(x -> x.replace("Content-Length: ", ""))
                 .map(Integer::parseInt)
                 .orElseGet(() -> 0);
+    }
+
+    private String findCookieInLines() {
+        return lines.stream()
+                .filter(x -> x.contains("Cookie: "))
+                .findFirst()
+                .map(x -> x.replace("Cookie: ", ""))
+                .orElseGet(() -> "");
     }
 
 }
