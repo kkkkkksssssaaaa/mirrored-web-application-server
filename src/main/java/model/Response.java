@@ -40,7 +40,7 @@ public class Response {
         headers.add(
                 String.format("HTTP/1.1 %d %s \r\n", status().getKey(), status().getValue()));
         headers.add(
-                "Content-Type: text/html;charset=utf-8\r\n");
+                "Content-Type: text/css,*/*;q=0.1;charset=utf-8\r\n");
         headers.add(
                 String.format("Content-Length: %d\r\n", this.body.length));
     }
