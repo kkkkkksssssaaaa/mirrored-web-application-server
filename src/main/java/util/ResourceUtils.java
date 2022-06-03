@@ -24,7 +24,7 @@ public class ResourceUtils {
     }
 
     public static String queryString(String requestedStr) {
-        Matcher m = ResourceValidator.matcher(requestedStr);
+        Matcher m = RequestValidator.matcher(requestedStr);
 
         if (!m.find()) {
             throw new IllegalArgumentException();
@@ -34,11 +34,11 @@ public class ResourceUtils {
     }
 
     private static File staticResource(String path) {
-        return new File(ResourceValidator.DEFAULT_PATH + path);
+        return new File(RequestValidator.DEFAULT_PATH + path);
     }
 
     public static String staticResourcePath(String line) {
-        Matcher m = ResourceValidator.matcher(line);
+        Matcher m = RequestValidator.matcher(line);
 
         if (!m.find()) {
             throw new IllegalArgumentException();

@@ -3,7 +3,7 @@ package model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.IOUtils;
-import util.ResourceValidator;
+import util.RequestValidator;
 import util.StringUtils;
 import webserver.RequestHandler;
 
@@ -72,7 +72,7 @@ public class Request {
     }
 
     private String findMethod() {
-        Matcher m = ResourceValidator.matcher(resource());
+        Matcher m = RequestValidator.matcher(resource());
 
         if (!m.find()) {
             throw new IllegalArgumentException();

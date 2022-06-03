@@ -1,11 +1,9 @@
 package util;
 
-import db.DataBase;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ResourceValidator {
+public class RequestValidator {
 
     public static final Pattern REQUEST_PATTERN =
             Pattern.compile("(GET|POST|PUT|DELETE)\\s+([^?\\s]+)((?:[?&][^&\\s]+)*)\\s+(HTTP/.*)");

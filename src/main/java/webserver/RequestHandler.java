@@ -42,7 +42,8 @@ public class RequestHandler extends Thread {
 
             Request req = Request.fromInputStream(in);
 
-            if (ResourceValidator.isRequestPatternMatched(req.resource())) {
+            // TODO 라우터를 통해 처리되도록 리팩토링
+            if (RequestValidator.isRequestPatternMatched(req.resource())) {
                 user = User.fromQueryString(req.postBody());
             }
 
