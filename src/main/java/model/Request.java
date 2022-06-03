@@ -3,6 +3,7 @@ package model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.IOUtils;
+import util.ResourceValidator;
 import util.StringUtils;
 import webserver.RequestHandler;
 
@@ -14,12 +15,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 public class Request {
 
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final List<String> lines = new ArrayList<>();
+    private final String method;
     private final String body;
 
     private Request(InputStream in) {
@@ -36,6 +39,7 @@ public class Request {
                 System.out.println(line);
             }
 
+            method = findMethod();
             body = IOUtils.readData(reader, contentLength());
 
             System.out.println("\n=======================================");
@@ -65,6 +69,16 @@ public class Request {
                 .map(x -> x.replace("Content-Length: ", ""))
                 .map(Integer::parseInt)
                 .orElseGet(() -> 0);
+    }
+
+    private String findMethod() {
+        Matcher m = ResourceValidator.matcher(resource());
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(1);
     }
 
 }
