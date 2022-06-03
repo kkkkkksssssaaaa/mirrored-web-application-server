@@ -37,11 +37,13 @@ public class UserController {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_MAIN), out)
                     .setLocation(Router.PAGE_MAIN)
+                    .setCookie("logined", Boolean.TRUE.toString())
                     .flush();
         } else {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_USER_LOGIN_FAILED), out)
                     .setLocation(Router.PAGE_USER_LOGIN_FAILED)
+                    .setCookie("logined", Boolean.FALSE.toString())
                     .flush();
         }
     }
