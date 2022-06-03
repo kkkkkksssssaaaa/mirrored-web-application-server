@@ -20,34 +20,9 @@ public class Request {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final List<String> lines = new ArrayList<>();
-    private String postBody;
+    private final String body;
 
     private Request(InputStream in) {
-        readStream(in);
-    }
-
-    public static Request fromInputStream(InputStream in) {
-        return new Request(in);
-    }
-
-    public String resource() {
-        return this.lines.get(0);
-    }
-
-    public String postBody() {
-        return this.postBody;
-    }
-
-    public int contentLength() {
-        return lines.stream()
-                .filter(x -> x.contains("Content-Length"))
-                .findFirst()
-                .map(x -> x.replace("Content-Length: ", ""))
-                .map(Integer::parseInt)
-                .orElseGet(() -> 0);
-    }
-
-    private void readStream(InputStream in) {
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(in, DEFAULT_CHARSET));
@@ -61,7 +36,7 @@ public class Request {
                 System.out.println(line);
             }
 
-            postBody = IOUtils.readData(reader, contentLength());
+            body = IOUtils.readData(reader, contentLength());
 
             System.out.println("\n=======================================");
         } catch (IOException e) {
@@ -69,6 +44,27 @@ public class Request {
 
             throw new RuntimeException();
         }
+    }
+
+    public static Request fromInputStream(InputStream in) {
+        return new Request(in);
+    }
+
+    public String resource() {
+        return this.lines.get(0);
+    }
+
+    public String postBody() {
+        return this.body;
+    }
+
+    public int contentLength() {
+        return lines.stream()
+                .filter(x -> x.contains("Content-Length"))
+                .findFirst()
+                .map(x -> x.replace("Content-Length: ", ""))
+                .map(Integer::parseInt)
+                .orElseGet(() -> 0);
     }
 
 }
