@@ -1,6 +1,7 @@
 package util;
 
 import mock.MockRequest;
+import model.Request;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -18,7 +19,7 @@ public class RequestValidatorTest {
 
     @Test
     public void 요청_문자열에서_queryString을_추출할_수_있다() {
-        String queryString = ResourceUtils.queryString(MockRequest.requestedStrWithQueryString());
+        String queryString = RequestUtil.queryString(MockRequest.requestedStrWithQueryString());
 
         assertEquals(
                 queryString,
