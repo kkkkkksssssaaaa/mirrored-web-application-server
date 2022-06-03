@@ -42,22 +42,7 @@ public class RequestHandler extends Thread {
 
             Request req = Request.fromInputStream(in);
 
-            // TODO 라우터를 통해 처리되도록 리팩토링
-            if (RequestValidator.isRequestPatternMatched(req.resource())) {
-                user = User.fromQueryString(req.postBody());
-            }
-
-            if (null == user || user.isEmpty()) {
-                body = ResourceUtils.getBytes(req.resource());
-
-                Response.create(200, body, out).flush();
-            } else {
-                DataBase.addUser(user);
-                body = ResourceUtils.getBytes(Router.MAIN);
-
-                Response.create(302, body, out)
-                        .flush(Router.MAIN);
-            }
+            Router.route(req, out);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
