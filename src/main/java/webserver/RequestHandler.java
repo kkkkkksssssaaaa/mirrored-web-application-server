@@ -3,9 +3,9 @@ package webserver;
 import java.io.*;
 import java.net.Socket;
 
+import db.DataBase;
 import model.Request;
 import model.User;
-import model.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.*;
@@ -46,7 +46,7 @@ public class RequestHandler extends Thread {
                 body = ResourceUtils.staticResourceBytes(req.resource());
                 response200Header(dos, body.length);
             } else {
-                UserStorage.add(user);
+                DataBase.addUser(user);
                 body = ResourceUtils.mainResource();
                 response302Header(dos, body.length);
             }
