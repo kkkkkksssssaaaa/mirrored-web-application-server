@@ -44,6 +44,10 @@ public class ResourceValidator {
             return "/user/form.html";
         }
 
+        if ("/user/login.html".equals(path)) {
+            return "/user/login.html";
+        }
+
         return "";
     }
 
