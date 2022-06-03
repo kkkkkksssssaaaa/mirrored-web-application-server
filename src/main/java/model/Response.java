@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Response {
@@ -16,8 +18,10 @@ public class Response {
     private final byte[] body;
     private final OutputStream out;
     private final DataOutputStream dos;
+    private final List<String> headers = new ArrayList<>();
 
     private static final Map<Integer, String> acceptCodes = new HashMap<>();
+
 
     static {
         acceptCodes.put(200, "OK");
@@ -33,6 +37,13 @@ public class Response {
         this.body = body;
         this.out = out;
         this.dos = new DataOutputStream(out);
+
+        headers.add(
+                String.format("HTTP/1.1 %d %s \r\n", status().getKey(), status().getValue()));
+        headers.add(
+                "Content-Type: text/html;charset=utf-8\r\n");
+        headers.add(
+                String.format("Content-Length: %d\r\n", this.body.length));
     }
 
     public static Response create(int code,
@@ -41,23 +52,25 @@ public class Response {
         return new Response(code, body, out);
     }
 
-    public void flush() {
-        try {
-            writeHeader();
-            dos.writeBytes("\r\n");
-            writeBody();
-            dos.flush();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+    public Response setCookie(String key, String value) {
+        headers.add(String.format("Set-Cookie: %s=%s", key, value));
+
+        return this;
     }
 
-    public void flush(String location) {
+    public Response setLocation(String location) {
+        headers.add(String.format("Location: %s", location));
+
+        return this;
+    }
+
+    public void flush() {
+        headers.add("\r\n");
+
         try {
             writeHeader();
-            dos.writeBytes("Location: " + location);
-            dos.writeBytes("\r\n");
-            writeBody();
+
+            dos.write(this.body, 0, this.body.length);
             dos.flush();
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -71,25 +84,15 @@ public class Response {
     }
 
     private void writeHeader() {
+        headers.forEach(this::writeByte);
+    }
+
+    private void writeByte(String header) {
         try {
-            dos.writeBytes(head());
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + this.body.length + "\r\n");
+            dos.writeBytes(header);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-    }
-
-    private void writeBody() {
-        try {
-            dos.write(this.body, 0, this.body.length);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private String head() {
-        return String.format("HTTP/1.1 %d %s \r\n", status().getKey(), status().getValue());
     }
 
     private Map.Entry<Integer, String> status() {

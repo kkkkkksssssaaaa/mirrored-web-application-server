@@ -26,7 +26,8 @@ public class UserController {
 
         Response.create(
                 302, ResourceUtils.getBytes(Router.PAGE_MAIN), out)
-                .flush(Router.PAGE_MAIN);
+                .setLocation(Router.PAGE_MAIN)
+                .flush();
     }
 
     public void login() {
@@ -35,11 +36,13 @@ public class UserController {
         if (DataBase.findAll().contains(user)) {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_MAIN), out)
-                    .flush(Router.PAGE_MAIN);
+                    .setLocation(Router.PAGE_MAIN)
+                    .flush();
         } else {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_USER_LOGIN_FAILED), out)
-                    .flush(Router.PAGE_USER_LOGIN_FAILED);
+                    .setLocation(Router.PAGE_USER_LOGIN_FAILED)
+                    .flush();
         }
     }
 
