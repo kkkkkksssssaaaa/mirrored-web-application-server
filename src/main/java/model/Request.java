@@ -57,6 +57,10 @@ public class Request {
         return new Request(in);
     }
 
+    public String method() {
+        return this.method;
+    }
+
     public String resource() {
         return this.resource;
     }
