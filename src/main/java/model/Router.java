@@ -15,6 +15,7 @@ public class Router {
     public static final String PAGE_USER_LOGIN_FAILED = "/user/login_failed.html";
     public static final String USER_CREATE = "/user/create";
     public static final String USER_LOGIN = "/user/login";
+    public static final String USER_LIST = "/user/list";
 
     private static final Map<String, String> pages = new HashMap<>();
 
@@ -43,6 +44,9 @@ public class Router {
                 && USER_LOGIN.equals(req.resource())) {
 
             new UserController(req, out).login();
+        } else if (USER_LIST.equals(req.resource())) {
+
+            new UserController(req, out).list();
         } else {
             Response.create(200, ResourceUtils.getBytes(req.resource()), out)
                     .flush();

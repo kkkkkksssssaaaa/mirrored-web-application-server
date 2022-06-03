@@ -36,14 +36,38 @@ public class UserController {
         if (DataBase.findAll().contains(user)) {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_MAIN), out)
-                    .setLocation(Router.PAGE_MAIN)
                     .setCookie("logined", Boolean.TRUE.toString())
+                    .setLocation(Router.PAGE_MAIN)
                     .flush();
         } else {
             Response.create(
                             302, ResourceUtils.getBytes(Router.PAGE_USER_LOGIN_FAILED), out)
-                    .setLocation(Router.PAGE_USER_LOGIN_FAILED)
                     .setCookie("logined", Boolean.FALSE.toString())
+                    .setLocation(Router.PAGE_USER_LOGIN_FAILED)
+                    .flush();
+        }
+    }
+
+    public void list() {
+        if (req.cookies().isEmpty()
+                || req.cookies().get("logined").isEmpty()
+                || req.cookies().get("logined").equals(Boolean.FALSE.toString())) {
+
+            Response.create(
+                            302, ResourceUtils.getBytes(Router.PAGE_USER_LOGIN), out)
+                    .setLocation(Router.PAGE_USER_LOGIN)
+                    .flush();
+        } else {
+            StringBuilder sb = new StringBuilder();
+
+            DataBase.findAll()
+                    .forEach(x -> {
+                        sb.append(x);
+                        sb.append("\n");
+                    });
+
+            Response.create(
+                            200, ResourceUtils.getBytes(sb), out)
                     .flush();
         }
     }
