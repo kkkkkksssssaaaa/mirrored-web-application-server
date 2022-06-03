@@ -43,6 +43,7 @@ public class Response {
                 "Content-Type: text/css,*/*;q=0.1;charset=utf-8\r\n");
         headers.add(
                 String.format("Content-Length: %d\r\n", this.body.length));
+        headers.add("Connection: keep-alive\r\n");
     }
 
     public static Response create(int code,
