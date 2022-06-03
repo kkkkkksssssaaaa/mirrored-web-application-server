@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import db.DataBase;
 import model.Request;
+import model.Response;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +32,6 @@ public class RequestHandler extends Thread {
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            DataOutputStream dos = new DataOutputStream(out);
-
             byte[] body = null;
             User user = null;
 
@@ -44,19 +43,19 @@ public class RequestHandler extends Thread {
 
             if (null == user || user.isEmpty()) {
                 body = ResourceUtils.staticResourceBytes(req.resource());
-                response200Header(dos, body.length);
+
+                Response.create(200, body, out).flush();
             } else {
                 DataBase.addUser(user);
                 body = ResourceUtils.mainResource();
-                response302Header(dos, body.length);
-            }
 
-            responseBody(dos, body);
+                Response.create(302, body, out)
+                        .flush(ResourceValidator.MAIN);
+            }
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
-
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
