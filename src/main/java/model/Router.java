@@ -1,6 +1,6 @@
 package model;
 
-import util.RequestValidator;
+import util.ResourceUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class Router {
 
     public static String find(String key) {
         if (!pages.containsKey(key)) {
-            return RequestValidator.find(key);
+            return key;
         }
 
         return pages.get(key);

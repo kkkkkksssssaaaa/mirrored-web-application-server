@@ -7,7 +7,6 @@ public class RequestValidator {
 
     public static final Pattern REQUEST_PATTERN =
             Pattern.compile("(GET|POST|PUT|DELETE)\\s+([^?\\s]+)((?:[?&][^&\\s]+)*)\\s+(HTTP/.*)");
-    public static final String DEFAULT_PATH = "./webapp";
 
     public static boolean isContainQueryParameter(String requestedStr) {
         Matcher m = REQUEST_PATTERN.matcher(requestedStr);
@@ -25,10 +24,6 @@ public class RequestValidator {
 
     public static Matcher matcher(String requestedStr) {
         return REQUEST_PATTERN.matcher(requestedStr);
-    }
-
-    public static String find(String key) {
-        return DEFAULT_PATH + key;
     }
 
 }
