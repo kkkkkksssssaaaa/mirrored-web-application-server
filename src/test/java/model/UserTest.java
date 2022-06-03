@@ -3,19 +3,18 @@ package model;
 import mock.MockRequest;
 import org.junit.Test;
 import util.HttpRequestUtils;
-import util.ResourceUtils;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class UserTest {
 
     @Test
     public void queryParam으로부터_User인스턴스를_만들_수_있다() {
         Map<String, String> queryParam =
-                HttpRequestUtils.parseQueryString(
-                        ResourceUtils.queryString(MockRequest.requestedStrWithQueryString()));
+                HttpRequestUtils.queryParamFromRequestedString(
+                        MockRequest.requestedStrWithQueryString());
 
         User user = new User(
                 queryParam.get("userId"),

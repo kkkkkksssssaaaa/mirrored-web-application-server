@@ -1,10 +1,10 @@
 package webserver;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * 1. 웹 서버를 시작하고 클라이언트의 요청을 받기 위해 대기

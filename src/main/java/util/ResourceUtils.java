@@ -1,47 +1,25 @@
 package util;
 
+import model.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 public class ResourceUtils {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceUtils.class);
-
-    public static byte[] staticResourceBytes(String line) {
-        if (!ResourceValidator.isPresent(staticResourcePath(line))) {
-            return new byte[0];
-        }
-
-        return bytes(staticResourcePath(line));
-    }
-
-    public static Map<String, String> queryParams(String line) {
-        return HttpRequestUtils
-                .parseQueryString(queryString(line));
-    }
-
-    public static String queryString(String requestedStr) {
-        Matcher m = ResourceValidator.matcher(requestedStr);
-
-        if (!m.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        return m.group(3).replace("?", "");
-    }
+    public static final String DEFAULT_PATH = "./webapp";
 
     private static File staticResource(String path) {
-        return new File(ResourceValidator.DEFAULT_PATH + path);
+        return new File(DEFAULT_PATH + path);
     }
 
     public static String staticResourcePath(String line) {
-        Matcher m = ResourceValidator.matcher(line);
+        Matcher m = RequestValidator.matcher(line);
 
         if (!m.find()) {
             throw new IllegalArgumentException();
@@ -50,10 +28,18 @@ public class ResourceUtils {
         return m.group(2);
     }
 
+    public static byte[] getBytes(String router) {
+        return bytes(router);
+    }
+
+    public static byte[] getBytes(StringBuilder sb) {
+        return sb.toString().getBytes();
+    }
+
     private static byte[] bytes(String path) {
         try {
             File staticResource = staticResource(
-                    ResourceValidator.findStaticResource(path));
+                    Router.find(path));
 
             return Files
                     .readAllBytes(staticResource.toPath());

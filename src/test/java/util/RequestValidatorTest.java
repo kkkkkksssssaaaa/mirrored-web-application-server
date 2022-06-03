@@ -8,17 +8,17 @@ import static org.junit.Assert.*;
 /**
  * @see MockRequest
  * */
-public class ResourceValidatorTest {
+public class RequestValidatorTest {
 
     @Test
     public void 요청_문자열_정규식_검사() {
-        assertTrue(ResourceValidator.isRequestPatternMatched(MockRequest.requestedStrWithQueryString()));
-        assertTrue(ResourceValidator.isRequestPatternMatched(MockRequest.requestedStr()));
+        assertTrue(RequestValidator.isRequestPatternMatched(MockRequest.requestedStrWithQueryString()));
+        assertTrue(RequestValidator.isRequestPatternMatched(MockRequest.requestedStr()));
     }
 
     @Test
     public void 요청_문자열에서_queryString을_추출할_수_있다() {
-        String queryString = ResourceUtils.queryString(MockRequest.requestedStrWithQueryString());
+        String queryString = HttpRequestUtils.queryString(MockRequest.requestedStrWithQueryString());
 
         assertEquals(
                 queryString,
@@ -36,8 +36,8 @@ public class ResourceValidatorTest {
 
     @Test
     public void 요청_문자열에서_queryParam이_존재하는지_구분할_수_있다() {
-        assertTrue(ResourceValidator.isContainQueryParameter(MockRequest.requestedStrWithQueryString()));
-        assertFalse(ResourceValidator.isContainQueryParameter(MockRequest.requestedStr()));
+        assertTrue(RequestValidator.isContainQueryParameter(MockRequest.requestedStrWithQueryString()));
+        assertFalse(RequestValidator.isContainQueryParameter(MockRequest.requestedStr()));
     }
 
 }
