@@ -41,6 +41,29 @@ public class Response {
         return new Response(code, body, out);
     }
 
+    public void flush() {
+        try {
+            writeHeader();
+            dos.writeBytes("\r\n");
+            writeBody();
+            dos.flush();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public void flush(String location) {
+        try {
+            writeHeader();
+            dos.writeBytes("Location: " + location);
+            dos.writeBytes("\r\n");
+            writeBody();
+            dos.flush();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
     private void validateStatusCode(int code) {
         if (!acceptCodes.containsKey(code)) {
             throw new IllegalArgumentException("not found status");
