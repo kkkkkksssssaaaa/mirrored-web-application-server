@@ -32,6 +32,10 @@ public class ResourceUtils {
         return bytes(router);
     }
 
+    public static byte[] getBytes(StringBuilder sb) {
+        return sb.toString().getBytes();
+    }
+
     private static byte[] bytes(String path) {
         try {
             File staticResource = staticResource(
