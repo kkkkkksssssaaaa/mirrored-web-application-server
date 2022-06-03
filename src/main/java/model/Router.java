@@ -1,5 +1,9 @@
 package model;
 
+import controller.UserController;
+import util.ResourceUtils;
+
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +31,17 @@ public class Router {
         }
 
         return pages.get(key);
+    }
+
+    public static void route(Request req, OutputStream out) {
+        if ("POST".equals(req.method())
+                && USER_CREATE.equals(req.resource())) {
+
+            new UserController(req, out).create();
+        } else {
+            Response.create(200, ResourceUtils.getBytes(req.resource()), out)
+                    .flush();
+        }
     }
 
 }
