@@ -1,7 +1,6 @@
 package util;
 
 import mock.MockRequest;
-import model.Request;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

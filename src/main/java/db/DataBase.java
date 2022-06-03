@@ -1,13 +1,10 @@
 package db;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
 import model.User;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class DataBase {
     private static Map<String, User> users = Maps.newHashMap();

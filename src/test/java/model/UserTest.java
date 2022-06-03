@@ -2,12 +2,11 @@ package model;
 
 import mock.MockRequest;
 import org.junit.Test;
-import util.HttpRequestUtils;
 import util.RequestUtil;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class UserTest {
 

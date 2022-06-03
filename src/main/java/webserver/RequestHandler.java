@@ -1,16 +1,15 @@
 package webserver;
 
-import java.io.*;
-import java.net.Socket;
-
-import db.DataBase;
 import model.Request;
-import model.Response;
 import model.Router;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 /**
  * 2. WebServer 가 클라이언트의 요청을 받으면 새로운 스레드를 실행
