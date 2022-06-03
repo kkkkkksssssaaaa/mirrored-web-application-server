@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import util.HttpRequestUtils;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class User {
     private String userId;
@@ -46,16 +47,31 @@ public class User {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
-    }
-
     public boolean isEmpty() {
         return Strings.isNullOrEmpty(this.userId)
                 && Strings.isNullOrEmpty(this.password)
                 && Strings.isNullOrEmpty(this.name)
                 && Strings.isNullOrEmpty(this.email);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(this.getClass().equals(o.getClass()))) {
+            return false;
+        }
+
+        return this.getUserId().equals(((User) o).getUserId())
+                && this.getPassword().equals(((User) o).getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getUserId(), this.getPassword());
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
     }
 
 }
