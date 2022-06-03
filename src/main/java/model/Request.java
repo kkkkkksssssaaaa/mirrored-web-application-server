@@ -41,8 +41,8 @@ public class Request {
                 System.out.println(line);
             }
 
-            method = RequestUtil.findMethod(this.lines.get(0));
-            queryParam.putAll(RequestUtil.queryParamFromRequestedString(this.lines.get(0)));
+            method = HttpRequestUtils.findMethod(this.lines.get(0));
+            queryParam.putAll(HttpRequestUtils.queryParamFromRequestedString(this.lines.get(0)));
             cookies.putAll(HttpRequestUtils.parseCookies(findCookieInLines()));
             resource = ResourceUtils.staticResourcePath(this.lines.get(0));
             body = IOUtils.readData(reader, contentLength());

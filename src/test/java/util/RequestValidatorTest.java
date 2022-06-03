@@ -18,7 +18,7 @@ public class RequestValidatorTest {
 
     @Test
     public void 요청_문자열에서_queryString을_추출할_수_있다() {
-        String queryString = RequestUtil.queryString(MockRequest.requestedStrWithQueryString());
+        String queryString = HttpRequestUtils.queryString(MockRequest.requestedStrWithQueryString());
 
         assertEquals(
                 queryString,

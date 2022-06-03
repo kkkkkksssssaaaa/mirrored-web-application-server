@@ -4,7 +4,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class HttpRequestUtils {
@@ -51,6 +53,38 @@ public class HttpRequestUtils {
 
     public static Pair parseHeader(String header) {
         return getKeyValue(header, ": ");
+    }
+
+    public static String findMethod(String requestedStr) {
+        Matcher m = RequestValidator.matcher(requestedStr);
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(1);
+    }
+
+    public static String queryString(String requestedStr) {
+        Matcher m = RequestValidator.matcher(requestedStr);
+
+        if (!m.find()) {
+            throw new IllegalArgumentException();
+        }
+
+        return m.group(3).replace("?", "");
+    }
+
+    public static Map<String, String> queryParamFromQueryString(String queryString) {
+        if (!RequestValidator.isContainQueryParameter(queryString)) {
+            return new HashMap<>();
+        }
+
+        return parseQueryString(queryString);
+    }
+
+    public static Map<String, String> queryParamFromRequestedString(String requestedStr) {
+        return parseQueryString(queryString(requestedStr));
     }
 
     public static class Pair {
