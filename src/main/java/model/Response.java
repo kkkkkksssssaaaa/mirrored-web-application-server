@@ -53,13 +53,13 @@ public class Response {
     }
 
     public Response setCookie(String key, String value) {
-        headers.add(String.format("Set-Cookie: %s=%s", key, value));
+        headers.add(String.format("Set-Cookie: %s=%s\r\n", key, value));
 
         return this;
     }
 
     public Response setLocation(String location) {
-        headers.add(String.format("Location: %s", location));
+        headers.add(String.format("Location: %s\r\n", location));
 
         return this;
     }
