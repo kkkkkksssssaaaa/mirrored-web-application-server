@@ -1,9 +1,7 @@
 package util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import db.DataBase;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,11 +11,6 @@ public class ResourceValidator {
             Pattern.compile("(GET|POST|PUT|DELETE)\\s+([^?\\s]+)((?:[?&][^&\\s]+)*)\\s+(HTTP/.*)");
     public static final String DEFAULT_PATH = "./webapp";
     public static final String MAIN = "/index.html";
-    private static final List<String> STATIC_RESOURCES =
-            Arrays.asList(
-                    "/index.html",
-                    "/user/create",
-                    "/user/form.html");
 
     public static boolean isContainQueryParameter(String requestedStr) {
         Matcher m = REQUEST_PATTERN.matcher(requestedStr);
@@ -38,7 +31,7 @@ public class ResourceValidator {
     }
 
     public static boolean isPresent(String path) {
-        return STATIC_RESOURCES.contains(path);
+        return DataBase.STATIC_RESOURCES.contains(path);
     }
 
     public static String findStaticResource(String path) {
