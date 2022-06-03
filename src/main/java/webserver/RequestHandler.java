@@ -6,6 +6,7 @@ import java.net.Socket;
 import db.DataBase;
 import model.Request;
 import model.Response;
+import model.Router;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +52,10 @@ public class RequestHandler extends Thread {
                 Response.create(200, body, out).flush();
             } else {
                 DataBase.addUser(user);
-                body = ResourceUtils.mainResource();
+                body = ResourceUtils.resource(Router.MAIN);
 
                 Response.create(302, body, out)
-                        .flush(ResourceValidator.MAIN);
+                        .flush(Router.MAIN);
             }
         } catch (IOException e) {
             log.error(e.getMessage());

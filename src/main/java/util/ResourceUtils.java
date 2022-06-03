@@ -1,5 +1,6 @@
 package util;
 
+import model.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,6 @@ public class ResourceUtils {
     private static final Logger log = LoggerFactory.getLogger(ResourceUtils.class);
 
     public static byte[] staticResourceBytes(String line) {
-        if (!ResourceValidator.isPresent(staticResourcePath(line))) {
-            return new byte[0];
-        }
-
         return bytes(staticResourcePath(line));
     }
 
@@ -50,14 +47,14 @@ public class ResourceUtils {
         return m.group(2);
     }
 
-    public static byte[] mainResource() {
-        return bytes(ResourceValidator.MAIN);
+    public static byte[] resource(String router) {
+        return bytes(router);
     }
 
     private static byte[] bytes(String path) {
         try {
             File staticResource = staticResource(
-                    ResourceValidator.findStaticResource(path));
+                    Router.find(path));
 
             return Files
                     .readAllBytes(staticResource.toPath());
