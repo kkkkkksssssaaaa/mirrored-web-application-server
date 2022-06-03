@@ -22,7 +22,6 @@ public class Response {
 
     private static final Map<Integer, String> acceptCodes = new HashMap<>();
 
-
     static {
         acceptCodes.put(200, "OK");
         acceptCodes.put(302, "Found");
