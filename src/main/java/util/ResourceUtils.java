@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 public class ResourceUtils {
@@ -17,21 +16,6 @@ public class ResourceUtils {
 
     public static byte[] staticResourceBytes(String line) {
         return bytes(staticResourcePath(line));
-    }
-
-    public static Map<String, String> queryParams(String line) {
-        return HttpRequestUtils
-                .parseQueryString(queryString(line));
-    }
-
-    public static String queryString(String requestedStr) {
-        Matcher m = RequestValidator.matcher(requestedStr);
-
-        if (!m.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        return m.group(3).replace("?", "");
     }
 
     private static File staticResource(String path) {

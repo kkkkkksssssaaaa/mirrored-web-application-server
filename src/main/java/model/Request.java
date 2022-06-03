@@ -2,9 +2,7 @@ package model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.IOUtils;
-import util.RequestValidator;
-import util.StringUtils;
+import util.*;
 import webserver.RequestHandler;
 
 import java.io.BufferedReader;
@@ -14,8 +12,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
+import java.util.Map;
 
 public class Request {
 
@@ -23,6 +22,7 @@ public class Request {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final List<String> lines = new ArrayList<>();
     private final String method;
+    private final Map<String, String> queryParam = new HashMap<>();
     private final String body;
 
     private Request(InputStream in) {
@@ -39,8 +39,9 @@ public class Request {
                 System.out.println(line);
             }
 
-            method = findMethod();
+            method = RequestUtil.findMethod(resource());
             body = IOUtils.readData(reader, contentLength());
+            queryParam.putAll(RequestUtil.queryParamFromRequestedString(resource()));
 
             System.out.println("\n=======================================");
         } catch (IOException e) {
@@ -69,16 +70,6 @@ public class Request {
                 .map(x -> x.replace("Content-Length: ", ""))
                 .map(Integer::parseInt)
                 .orElseGet(() -> 0);
-    }
-
-    private String findMethod() {
-        Matcher m = RequestValidator.matcher(resource());
-
-        if (!m.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        return m.group(1);
     }
 
 }
