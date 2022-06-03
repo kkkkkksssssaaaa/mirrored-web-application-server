@@ -14,13 +14,13 @@ import java.util.Map;
 public class Response {
 
     private static final Logger log = LoggerFactory.getLogger(Response.class);
+    private static final Map<Integer, String> acceptCodes = new HashMap<>();
+
     private final int code;
     private final byte[] body;
     private final OutputStream out;
     private final DataOutputStream dos;
     private final List<String> headers = new ArrayList<>();
-
-    private static final Map<Integer, String> acceptCodes = new HashMap<>();
 
     static {
         acceptCodes.put(200, "OK");
