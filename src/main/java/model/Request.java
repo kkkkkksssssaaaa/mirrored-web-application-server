@@ -23,6 +23,7 @@ public class Request {
     private final List<String> lines = new ArrayList<>();
     private final String method;
     private final Map<String, String> queryParam = new HashMap<>();
+    private final String resource;
     private final String body;
 
     private Request(InputStream in) {
@@ -39,9 +40,10 @@ public class Request {
                 System.out.println(line);
             }
 
-            method = RequestUtil.findMethod(resource());
+            method = RequestUtil.findMethod(this.lines.get(0));
+            queryParam.putAll(RequestUtil.queryParamFromRequestedString(this.lines.get(0)));
+            resource = ResourceUtils.staticResourcePath(this.lines.get(0));
             body = IOUtils.readData(reader, contentLength());
-            queryParam.putAll(RequestUtil.queryParamFromRequestedString(resource()));
 
             System.out.println("\n=======================================");
         } catch (IOException e) {
