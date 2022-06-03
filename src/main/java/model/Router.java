@@ -1,5 +1,7 @@
 package model;
 
+import util.ResourceValidator;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class Router {
 
     public static String find(String key) {
         if (!pages.containsKey(key)) {
-            throw new IllegalArgumentException();
+            return ResourceValidator.find(key);
         }
 
         return pages.get(key);

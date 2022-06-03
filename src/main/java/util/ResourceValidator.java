@@ -29,4 +29,8 @@ public class ResourceValidator {
         return REQUEST_PATTERN.matcher(requestedStr);
     }
 
+    public static String find(String key) {
+        return DEFAULT_PATH + key;
+    }
+
 }
