@@ -10,12 +10,6 @@ import com.google.common.collect.Maps;
 import model.User;
 
 public class DataBase {
-    public static final List<String> STATIC_RESOURCES =
-            Arrays.asList(
-                    "/index.html",
-                    "/user/create",
-                    "/user/login.html",
-                    "/user/form.html");
     private static Map<String, User> users = Maps.newHashMap();
 
     public static void addUser(User user) {
