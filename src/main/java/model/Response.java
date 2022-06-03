@@ -27,14 +27,11 @@ public class Response {
     private Response(int code,
                      byte[] body,
                      OutputStream out) {
-        if (acceptCodes.containsKey(code)) {
-            throw new IllegalArgumentException("not found status");
-        }
+        validateStatusCode(code);
 
         this.code = code;
         this.body = body;
         this.out = out;
-
         this.dos = new DataOutputStream(out);
     }
 
@@ -44,12 +41,17 @@ public class Response {
         return new Response(code, body, out);
     }
 
+    private void validateStatusCode(int code) {
+        if (!acceptCodes.containsKey(code)) {
+            throw new IllegalArgumentException("not found status");
+        }
+    }
+
     private void writeHeader() {
         try {
             dos.writeBytes(head());
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + this.body.length + "\r\n");
-            dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -58,7 +60,6 @@ public class Response {
     private void writeBody() {
         try {
             dos.write(this.body, 0, this.body.length);
-            dos.flush();
         } catch (IOException e) {
             log.error(e.getMessage());
         }
