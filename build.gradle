@@ -3,40 +3,36 @@
  */
 
 plugins {
-    id 'java-library'
-    id 'maven-publish'
+    id 'java'
 }
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
-    }
+    mavenCentral()
 }
 
 dependencies {
-    api 'com.google.guava:guava:18.0'
-    api 'ch.qos.logback:logback-classic:1.1.2'
-    testImplementation 'junit:junit:4.11'
+    implementation 'com.google.guava:guava:31.1-jre'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
 
 group = 'org.nhnnext'
 version = '1.0'
 description = 'web-application-server'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_17
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-tasks.withType(Javadoc) {
-    options.encoding = 'UTF-8'
-}
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            from(components.java)
+//        }
+//    }
+//}
+//
+//tasks.withType(JavaCompile) {
+//    options.encoding = 'UTF-8'
+//}
+//
+//tasks.withType(Javadoc) {
+//    options.encoding = 'UTF-8'
+//}
